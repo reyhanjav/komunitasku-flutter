@@ -75,7 +75,7 @@ class LoginScreenState extends State<LoginScreen>
                 image: backgroundImage,
               ),
               child: new Container(
-                //color: Colors.pink,
+                color: Colors.blue,
                   child: new ListView(
                     padding: const EdgeInsets.all(0.0),
                     children: <Widget>[

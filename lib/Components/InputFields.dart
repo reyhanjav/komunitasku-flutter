@@ -12,7 +12,7 @@ class InputFieldArea extends StatelessWidget {
         border: new Border(
           bottom: new BorderSide(
             width: 0.5,
-            color: Colors.white24,
+            color: Colors.white,
           ),
         ),
       ),

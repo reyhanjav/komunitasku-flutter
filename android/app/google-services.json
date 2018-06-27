@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "567372702552",
+    "firebase_url": "https://komunitasku-7af28.firebaseio.com",
+    "project_id": "komunitasku-7af28",
+    "storage_bucket": "komunitasku-7af28.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567372702552:android:5f746ee207e8fcb2",
+        "android_client_info": {
+          "package_name": "com.example.komunitasku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567372702552-hd288qpr1pcjj1f47cu2fsjh1t0t8kb7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.komunitasku",
+            "certificate_hash": "6cd6e682f8cd1aa57d726f6036cff22098036288"
+          }
+        },
+        {
+          "client_id": "567372702552-9p79vn5r8qhe31l976djv22phpeuluqa.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "567372702552-9p79vn5r8qhe31l976djv22phpeuluqa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-H98omSWlG2ANGEPTywhvSexlzhH8pUI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "567372702552-9p79vn5r8qhe31l976djv22phpeuluqa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
