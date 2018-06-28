@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:komunitasku/Screens/auth_screen.dart';
+//import 'package:komunitasku/Screens/auth_screen.dart';
 
 class Profile extends StatefulWidget {
   @override

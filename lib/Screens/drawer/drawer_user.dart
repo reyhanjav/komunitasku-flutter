@@ -1,8 +1,8 @@
 import 'package:komunitasku/Screens/Anggota/profile/Profile.dart';
-import 'package:komunitasku/Screens/Anggota/event/Event.dart';
+import 'package:komunitasku/Screens/Anggota/event/Event2.dart';
 import 'package:komunitasku/Screens/Anggota/forum/listForum.dart';
 import 'package:komunitasku/Screens/Anggota/todo/todo_demo.dart';
-import 'package:komunitasku/Screens/auth_screen.dart';
+//import 'package:komunitasku/Screens/auth_screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -33,11 +33,27 @@ class UserDrawerState extends State<UserDrawer> {
       case 0:
         return new Profile();
       case 1:
-        return new ExpansionPanelsDemo();
+        return new EventPage();
       case 2:
         return new ThirdFragment();
       case 3:
         return new GalleryScreen(title: 'TODO');
+
+      default:
+        return new Text("Error");
+    }
+  }
+
+  _getDrawerFabs(int pos) {
+    switch (pos) {
+      case 0:
+        return new FloatingActionButton(child: new Icon(Icons.create),onPressed: (){},);
+      case 1:
+        return new FloatingActionButton(child: new Icon(Icons.filter_list),onPressed: (){},);
+      case 2:
+        return new FloatingActionButton(child: new Icon(Icons.add),onPressed: (){},);
+      case 3:
+        return new FloatingActionButton(child: new Icon(Icons.filter_list),onPressed: (){},);
 
       default:
         return new Text("Error");
@@ -68,12 +84,9 @@ class UserDrawerState extends State<UserDrawer> {
     return new Scaffold(
       
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: showFab?FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () => Navigator.push(context,new MaterialPageRoute(builder: (context) => new AuthScreen())),
-      ):null,
+      floatingActionButton: showFab?_getDrawerFabs(_selectedDrawerIndex):null,
       bottomNavigationBar: BottomAppBar(
-        hasNotch: false,
+        hasNotch: true,
         child: new Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,

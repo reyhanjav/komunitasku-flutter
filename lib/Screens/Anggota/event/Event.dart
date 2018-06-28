@@ -1,3 +1,4 @@
+import './dataEvent.dart';
 import 'package:flutter/material.dart';
 
 
@@ -109,7 +110,7 @@ class CollapsibleBody extends StatelessWidget {
                 margin: const EdgeInsets.only(right: 8.0),
                 child: new FlatButton(
                   onPressed: onCancel,
-                  child: const Text('CANCEL', style: const TextStyle(
+                  child: const Text('DELETE', style: const TextStyle(
                     color: Colors.black54,
                     fontSize: 15.0,
                     fontWeight: FontWeight.w500
@@ -136,6 +137,7 @@ class DemoItem<T> {
   DemoItem({
     this.name,
     this.value,
+    this.desc,
     this.hint,
     this.builder,
     this.valueToString
@@ -143,6 +145,7 @@ class DemoItem<T> {
 
   final String name;
   final String hint;
+  final String desc;
   final TextEditingController textController;
   final DemoItemBodyBuilder<T> builder;
   final ValueToString<T> valueToString;
@@ -165,6 +168,7 @@ class DemoItem<T> {
 
 class ExpansionPanelsDemo extends StatefulWidget {
   static const String routeName = '/material/expansion_panels';
+  ExpansionPanelsDemo({Key key}) : super(key: key);
 
   @override
   _ExpansionPanelsDemoState createState() => new _ExpansionPanelsDemoState();
@@ -172,16 +176,21 @@ class ExpansionPanelsDemo extends StatefulWidget {
 
 class _ExpansionPanelsDemoState extends State<ExpansionPanelsDemo> {
   List<DemoItem<dynamic>> _demoItems;
+  final PostState postState = new PostState();
 
   @override
   void initState() {
     super.initState();
-
-    _demoItems = <DemoItem<dynamic>>[
+  
+    new ListView.builder(
+        itemCount: postState.posts.length,
+        itemBuilder: (context, index) {
+          _demoItems = <DemoItem<dynamic>>[
       new DemoItem<String>(
         name: 'Gath',
-        value: 'Gathering Agriweb',
-        hint: 'Change Gath name',
+        value: postState.posts[index].nama,
+        desc: postState.posts[index].materi,
+        hint: postState.posts[index].nama,
         valueToString: (String value) => value,
         builder: (DemoItem<String> item) {
           void close() {
@@ -190,7 +199,7 @@ class _ExpansionPanelsDemoState extends State<ExpansionPanelsDemo> {
             });
           }
 
-          return new Form(
+          return new Container(
             child: new Builder(
               builder: (BuildContext context) {
                 return new CollapsibleBody(
@@ -199,13 +208,8 @@ class _ExpansionPanelsDemoState extends State<ExpansionPanelsDemo> {
                   onCancel: () { Form.of(context).reset(); close(); },
                   child: new Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: new TextFormField(
-                      controller: item.textController,
-                      decoration: new InputDecoration(
-                        hintText: item.hint,
-                        labelText: item.name,
-                      ),
-                      onSaved: (String value) { item.value = value; },
+                    child: new Center(
+                      child: new Text(item.desc),
                     ),
                   ),
                 );
@@ -214,79 +218,10 @@ class _ExpansionPanelsDemoState extends State<ExpansionPanelsDemo> {
           );
         },
       ),
-      new DemoItem<String>(
-        name: 'Challenge',
-        value: 'Simple App Bar Module',
-        hint: 'Change challenge name',
-        valueToString: (String value) => value,
-        builder: (DemoItem<String> item) {
-          void close() {
-            setState(() {
-              item.isExpanded = false;
-            });
-          }
 
-          return new Form(
-            child: new Builder(
-              builder: (BuildContext context) {
-                return new CollapsibleBody(
-                  margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                  onSave: () { Form.of(context).save(); close(); },
-                  onCancel: () { Form.of(context).reset(); close(); },
-                  child: new Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: new TextFormField(
-                      controller: item.textController,
-                      decoration: new InputDecoration(
-                        hintText: item.hint,
-                        labelText: item.name,
-                      ),
-                      onSaved: (String value) { item.value = value; },
-                    ),
-                  ),
-                );
-              },
-            ),
-          );
-        },
-      ),
-      new DemoItem<String>(
-        name: 'Event',
-        value: 'Gemastik 11',
-        hint: 'Change Event',
-        valueToString: (String value) => value,
-        builder: (DemoItem<String> item) {
-          void close() {
-            setState(() {
-              item.isExpanded = false;
-            });
-          }
-
-          return new Form(
-            child: new Builder(
-              builder: (BuildContext context) {
-                return new CollapsibleBody(
-                  margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                  onSave: () { Form.of(context).save(); close(); },
-                  onCancel: () { Form.of(context).reset(); close(); },
-                  child: new Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: new TextFormField(
-                      controller: item.textController,
-                      decoration: new InputDecoration(
-                        hintText: item.hint,
-                        labelText: item.name,
-                      ),
-                      onSaved: (String value) { item.value = value; },
-                    ),
-                  ),
-                );
-              },
-            ),
-          );
-        },
-      ),
     ];
+        }
+    );
   }
 
   @override
