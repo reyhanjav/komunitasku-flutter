@@ -26,7 +26,9 @@ class Post {
     this.materi,
     this.deskripsi,
     this.lokasi,
-    this.pengajar
+    this.pengajar,
+    this.reward_points,
+    this.reward_xp
   });
 
   static List<Post> fromJsonArray(String jsonArrayString){

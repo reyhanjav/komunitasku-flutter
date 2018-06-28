@@ -73,7 +73,7 @@ class _EventPageState extends State<EventPage>{
 							child: new Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            new myCardLayout(title: postState.posts[index].nama, description: postState.posts[index].materi),
+            new myCardLayout(id: postState.posts[index].id, title: postState.posts[index].nama, description: postState.posts[index].materi),
             //this is not the list example, so when you add new cards, it won't be inside of the list.
           ],
         ), 
@@ -83,7 +83,8 @@ class _EventPageState extends State<EventPage>{
         }
     );
   }
-
+  
+  
   Widget _getErrorState(){
     return new Center(
       child: new Row(),
@@ -118,9 +119,10 @@ class _EventPageState extends State<EventPage>{
 
 class myCardLayout extends StatelessWidget {
   // default constructor
-  myCardLayout({this.title, this.description, this.location});
+  myCardLayout({this.id, this.title, this.description, this.location});
 
   // init variables
+  final int id;
   final String title;
   final String description;
   final String location;
