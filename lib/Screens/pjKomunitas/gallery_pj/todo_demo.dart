@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import './dataGallery.dart';
-//import 'package:sticky_headers/sticky_headers.dart';
-import './todo.dart';
+import 'package:flutter/animation.dart';
+import 'package:flutter/rendering.dart';
+import 'dart:ui';
+import 'package:komunitasku/Screens/pjKomunitas/gallery_pj/addGallery.dart';
+//import 'dart:async';
+//import 'CustomIcons.dart';
+import 'todo.dart';
 import 'package:flutter/foundation.dart';
-
-class GalleryPage extends StatefulWidget {
-  GalleryPage({Key key}) : super(key: key);
-
-  @override
-  _GalleryPageState createState() => new _GalleryPageState();
-}
 
 class ColorChoies {
   static const List<Color> colors = [
@@ -42,10 +39,18 @@ List<TodoObject> todos = [
   new TodoObject("School", Icons.school),
 ];
 
-class _GalleryPageState extends State<GalleryPage>{
-  
-  final PostState postState = new PostState();
-  BuildContext context;
+
+
+class GalleryScreen extends StatefulWidget {
+  GalleryScreen({Key key, this.title}) : super(key: key);
+  final String title;
+
+  @override
+  _GalleryScreenState createState() => new _GalleryScreenState();
+}
+
+class _GalleryScreenState extends State<GalleryScreen> with TickerProviderStateMixin {
+
   ScrollController scrollController;
   Color backgroundColor;
   Tween<Color> colorTween;
@@ -54,53 +59,66 @@ class _GalleryPageState extends State<GalleryPage>{
 
   @override
   void initState() {
-    super.initState();
-    _getPosts();
-  }
-
-  _getPosts() async {
-    if (!mounted) return;
-
-    await postState.getFromApi();
-    setState((){
-      if(postState.error){
-        _showError();
+    colorTween = new ColorTween(begin: ColorChoies.colors[0], end: ColorChoies.colors[1]);
+    backgroundColor = todos[0].color;
+    scrollController = new ScrollController();
+    scrollController.addListener(() {
+      ScrollPosition position = scrollController.position;
+      ScrollDirection direction = position.userScrollDirection;
+      int page = (position.pixels ~/ (position.maxScrollExtent/(todos.length.toDouble()-1)));
+      double pageDo = (position.pixels / (position.maxScrollExtent/(todos.length.toDouble()-1)));
+      double percent = pageDo - page;
+//      print("int page: " + page.toString());
+//      print("double page: " + pageDo.toString());
+//      print("percent " + percent.toString());
+      if (direction == ScrollDirection.reverse) {
+        //page begin 
+        if (todos.length-1 < page+1) {
+          return;
+        }
+        colorTween.begin = todos[page].color;
+        colorTween.end = todos[page+1].color;
+        setState(() {
+          backgroundColor = colorTween.lerp(percent);
+        });
+      }else if (direction == ScrollDirection.forward) {
+        //+1 begin page end
+        if (todos.length-1 < page+1) {
+          return;
+        }
+        colorTween.begin = todos[page].color;
+        colorTween.end = todos[page+1].color;
+        setState(() {
+          backgroundColor = colorTween.lerp(percent);
+        });
+      }else {
+        return;
       }
     });
   }
 
-  _retry(){
-    Scaffold.of(context).removeCurrentSnackBar();
-    postState.reset();
-    setState((){});
-    _getPosts();
-  }
 
-  void _showError(){
-    Scaffold.of(context).showSnackBar(new SnackBar(
-        content: new Text("An unknown error occurred"),
-        duration: new Duration(days: 1), // Make it permanent
-        action: new SnackBarAction(
-            label : "RETRY",
-            onPressed : (){_retry();}
-        )
-    ));
-  }
+  @override
+  Widget build(BuildContext context) {
 
-  Widget _getLoadingStateWidget(){
-    return new Center(
-      child: new CircularProgressIndicator(),
-    );
-  }
-
-  Widget _getSuccessStateWidget(){
     final double _width = MediaQuery.of(context).size.width;
-    return new ListView.builder(
-        itemCount: postState.posts.length,
-        itemBuilder: (context, index) {
-          return new Material(
-					color: Colors.white,
-					child: new Container(
+    //final double _ratioW =_width/375.0;
+
+    //final double _height = MediaQuery.of(context).size.height;
+    //final double _ratioH = _height/812.0;
+
+    
+
+    return new Container(
+      decoration: new BoxDecoration(
+        image: new DecorationImage(
+          image: new AssetImage('assets/login.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: new Scaffold(
+        backgroundColor: Colors.transparent,
+        body: new Container(
           child: new Stack(
           children: <Widget>[
             new Container(
@@ -133,9 +151,9 @@ class _GalleryPageState extends State<GalleryPage>{
                         new Padding(
                           padding: const EdgeInsets.only(bottom: 10.0),
                           child: new Text(
-                            "Gallery",
+                            "Wajan",
                             style: new TextStyle(
-                              color: Colors.black,
+                              color: Colors.white,
                               fontSize: 30.0,
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.w600,
@@ -143,16 +161,16 @@ class _GalleryPageState extends State<GalleryPage>{
                           ),
                         ),
                         new Text(
-                          "Random Documentation",
+                          "Random shitposting will be placed here",
                           style: new TextStyle(
-                            color: Colors.black,
+                            color: Colors.white70,
                             fontFamily: 'Poppins',
                           ),
                         ),
                         new Text(
                           "Just stay tune!",
                           style: new TextStyle(
-                            color: Colors.black,
+                            color: Colors.white70,
                             fontFamily: 'Poppins',
                           ),
                         ),
@@ -163,13 +181,12 @@ class _GalleryPageState extends State<GalleryPage>{
                     height: 440.0,
                     width: _width,
                     child: new ListView.builder(
-                      itemCount: postState.posts.length,
                       itemBuilder: (context, index) {
                         
                         TodoObject gallery = todos[index];
                         EdgeInsets padding = const EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0, bottom: 30.0);
 
-                        //double percentComplete = gallery.percentComplete();
+                        double percentComplete = gallery.percentComplete();
                         
                         return new Padding(
                           padding: padding,
@@ -240,13 +257,13 @@ class _GalleryPageState extends State<GalleryPage>{
                                                   width: 58.0,
                                                   decoration: new BoxDecoration(
                                                     shape: BoxShape.rectangle,
-                                                    color: Colors.pink,
+                                                    color: backgroundColor,
                                                     borderRadius: new BorderRadius.circular(16.0),
                                                   ),
                                                   child: new Center(
                                                     child: new Material(
                                                     color: Colors.transparent,
-                                                    child: new Text(postState.posts[index].label,
+                                                    child: new Text('SHITPOSTING',
                                                   style: new TextStyle(
                                                     color: Colors.white,
                                                     fontFamily: 'Poppins',
@@ -271,7 +288,7 @@ class _GalleryPageState extends State<GalleryPage>{
                                                       color: Colors.transparent,
                                                       type: MaterialType.transparency,
                                                       child: new IconButton(
-                                                        icon: new Icon(Icons.share, color: Colors.grey),
+                                                        icon: new Icon(Icons.share, color: Colors.grey,),
                                                         onPressed: () {},
                                                       ),
                                                     ),
@@ -298,7 +315,7 @@ class _GalleryPageState extends State<GalleryPage>{
                                                         width: 300.0,
                                                         decoration: new BoxDecoration(
                                                         image: new DecorationImage(
-                                                          image: new NetworkImage(postState.posts[index].url),
+                                                          image: new AssetImage('assets/marika.jpg'),
                                                           fit: BoxFit.cover,
                                                          ),
                                                         ),
@@ -317,7 +334,7 @@ class _GalleryPageState extends State<GalleryPage>{
                                               child: new Material(
                                                 color: Colors.transparent,
                                                 child: new Text(
-                                                  postState.posts[index].title,
+                                                  gallery.title,
                                                   style: new TextStyle(
                                                     fontFamily: 'Poppins',
                                                     fontSize: 25.0,
@@ -336,7 +353,7 @@ class _GalleryPageState extends State<GalleryPage>{
                                               tag: gallery.uuid + "_number_of_tasks",
                                               child: new Material(
                                                 color: Colors.transparent,
-                                                child: new Text(postState.posts[index].body,
+                                                child: new Text('''So what is a blockchain? Technically speaking, a blockchain is a linked list of blocks and a block is a group of ordered transactions. If you didn’t understand the last sentence,''',
                                                   style: new TextStyle(
                                                   color: Colors.grey[850],
                                                   fontSize: 12.0
@@ -361,7 +378,7 @@ class _GalleryPageState extends State<GalleryPage>{
                       physics: new CustomScrollPhysics(),
                       controller: scrollController,
                       itemExtent: _width - 80,
-                      //itemCount: todos.length,
+                      itemCount: todos.length,
                     ),
                   )
                 ],
@@ -370,87 +387,6 @@ class _GalleryPageState extends State<GalleryPage>{
           ],
         ),
         )
-				);
-        }
-    );
-  }
-
-  Widget _getErrorState(){
-    return new Center(
-      child: new Row(),
-    );
-  }
-
-  Widget getCurrentStateWidget(){
-    Widget currentStateWidget;
-    if(!postState.error && !postState.loading) {
-      currentStateWidget = _getSuccessStateWidget();
-    }
-    else if(!postState.error){
-      currentStateWidget = _getLoadingStateWidget();
-    }
-    else{
-      currentStateWidget = _getErrorState();
-    }
-    return currentStateWidget;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Widget currentWidget = getCurrentStateWidget();
-    return new Scaffold(
-        body: new Builder(builder: (BuildContext context) {
-          this.context = context;
-          return currentWidget;
-        })
-    );
-  }
-}
-
-class myCardLayout extends StatelessWidget {
-  // default constructor
-  myCardLayout({this.title, this.description});
-
-  // init variables
-  final String title;
-  final String description;
-
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-      child: new Card(
-        child: new Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            new ListTile(
-              title: new Text(
-                title,
-                style: new TextStyle(fontSize: 20.0),
-              ),
-              subtitle:
-                  new Text(description),
-            ),
-            new ButtonTheme.bar(
-              // make buttons use the appropriate styles for cards
-              child: new ButtonBar(
-                children: <Widget>[
-                  new FlatButton(
-                    child: const Text('DELETE'),
-                    onPressed: () {
-                      /* ... */
-                    },
-                  ),
-                  new FlatButton(
-                    child: const Text('EDIT'),
-                    onPressed: () {
-                      /* ... */
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -468,8 +404,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin{
-  final PostState postState = new PostState();
-  BuildContext context;
+
   double percentComplete;
   AnimationController animationBar;
   double barPercent = 0.0;
@@ -562,7 +497,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin{
                       width: screenWidth,
                       decoration: new BoxDecoration(
                       image: new DecorationImage(
-                        image: new NetworkImage(widget.gallery.title),
+                        image: new AssetImage('assets/marika.jpg'),
                         fit: BoxFit.cover,
                         ),
                         ),
@@ -646,6 +581,49 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin{
                 )
                 )
                 ),
+                // new Expanded(
+                //   child: new ScaleTransition(
+                //     scale: scaleAnimation,
+                //     child: new ListView.builder(
+                //       padding: const EdgeInsets.all(0.0),
+                //       itemBuilder: (BuildContext context, int index) {
+                //         DateTime currentDate = widget.gallery.tasks.keys.toList()[index];
+                //         DateTime _now = new DateTime.now();
+                //         DateTime today = new DateTime(_now.year, _now.month, _now.day);
+                //         String dateString;
+                //         if (currentDate.isBefore(today)) {
+                //           dateString = "Previous - " + new DateFormat.E().format(currentDate);
+                //         }else if (currentDate.isAtSameMomentAs(today)) {
+                //           dateString = "Today";
+                //         }else if (currentDate.isAtSameMomentAs(today.add(const Duration(days: 1)))) {
+                //           dateString = "Tomorrow";
+                //         }else {
+                //           dateString = new DateFormat.E().format(currentDate);
+                //         }
+                //         List<Widget> tasks = [new Text(dateString)];
+                //         widget.gallery.tasks[currentDate].forEach((task) {
+                //           tasks.add(new CustomCheckboxListTile(
+                //             activeColor: widget.gallery.color,
+                //             value: task.isCompleted(),
+                //             onChanged: (value) {
+                //               setState(() {
+                //                 task.setComplete(value);
+                //                 updateBarPercent();
+                //               });
+                //             },
+                //             title: new Text(task.task),
+                //             secondary: new Icon(Icons.alarm),
+                //           ));
+                //         });
+                //         return new Column(
+                //           crossAxisAlignment: CrossAxisAlignment.start,
+                //           children: tasks,
+                //         );
+                //       },
+                //       itemCount: widget.gallery.tasks.length,
+                //     ),
+                //   )
+                // )
               ],
             ),
           ),

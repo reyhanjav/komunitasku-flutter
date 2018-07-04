@@ -86,15 +86,6 @@ class DateTimeItem extends StatelessWidget {
   }
 }
 
-
-
-  dynamic myEncode(dynamic item) {
-  if(item is DateTime) {
-    return item.toIso8601String();
-  }
-  return item;
-}
-
 class TambahEvent extends StatefulWidget {
   @override
   TambahEventState createState() => new TambahEventState();
@@ -103,9 +94,6 @@ class TambahEvent extends StatefulWidget {
 class TambahEventState extends State<TambahEvent> {
   DateTime _fromDateTime = new DateTime.now();
   DateTime _toDateTime = new DateTime.now();
-  
-
-  
   //bool _allDayValue = false;
   bool _saveNeeded = false;
   bool _hasLocation = false;
@@ -120,18 +108,16 @@ TextEditingController controllerXp = new TextEditingController();
 TextEditingController controllerPoints = new TextEditingController();
 
 void addData() async {
-  var timeStamp = new DateTime.now();
-  var str = JSON.encode(timeStamp, toEncodable: myEncode);
-  print(str);
   String url =
-      'http://192.168.1.10:8080/gath';
+      'http://64.56.78.116:8080/gath';
   Map map = {
-    'nama': controllerName.text,
-    'deskripsi': str, //controllerDesc.text,
-    'materi': controllerMateri.text,
-    'lokasi': controllerLocation.text,
-    'reward_points': controllerPoints.text,
-    'reward_xp': controllerXp.text,
+    'data': {
+    "nama": controllerName.text,
+    "deskripsi": controllerDesc.text,
+    "materi": controllerMateri.text,
+    "lokasi": controllerLocation.text,
+    "reward_points": controllerPoints.text,
+    "reward_xp": controllerXp.text,},
   };
 
   print(await apiRequest(url, map));
@@ -309,7 +295,7 @@ Future<String> apiRequest(String url, Map jsonMap) async {
             new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Text('When', style: theme.textTheme.caption),
+                new Text('From', style: theme.textTheme.caption),
                 new DateTimeItem(
                   dateTime: _fromDateTime,
                   onChanged: (DateTime value) {
@@ -319,6 +305,21 @@ Future<String> apiRequest(String url, Map jsonMap) async {
                     });
                   }
                 )
+              ]
+            ),
+            new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text('To', style: theme.textTheme.caption),
+                new DateTimeItem(
+                  dateTime: _toDateTime,
+                  onChanged: (DateTime value) {
+                    setState(() {
+                      _toDateTime = value;
+                      _saveNeeded = true;
+                    });
+                  }
+                ),
               ]
             ),
             

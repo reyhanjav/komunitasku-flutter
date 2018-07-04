@@ -4,6 +4,7 @@ import 'package:komunitasku/Screens/pjKomunitas/event_pj/addEvent.dart';
 import 'package:komunitasku/Screens/pjKomunitas/gallery_pj/addGallery.dart';
 import 'package:komunitasku/Screens/pjKomunitas/absensi/absensi.dart';
 import 'package:komunitasku/Screens/Anggota/todo/todo_demo.dart';
+import 'package:komunitasku/Screens/pjKomunitas/gallery_pj/gallery.dart';
 import 'package:flutter/material.dart';
 
 class DrawerItem {
@@ -44,7 +45,7 @@ class PjDrawerState extends State<PjDrawer> {
       case 2:
         return new AbsensiScreen();
       case 3:
-        return GalleryScreen(title: 'TODO');
+        return GalleryPage();
 
       default:
         return new Text("Error");

@@ -7,29 +7,25 @@ class Post {
 
   final int id;
 
-  final String nama;
+  final String title;
 
-  final String deskripsi;
+  final String body;
 
-  final String materi;
+  final String label;
   
-  final String lokasi;
+  final String time;
+
+  final String url;
   
-  final int reward_points;
-
-  final int reward_xp;
-
-  final String pengajar;
 
   Post({
     this.id,
-    this.nama,
-    this.materi,
-    this.deskripsi,
-    this.lokasi,
-    this.reward_points,
-    this.reward_xp,
-    this.pengajar
+    this.title,
+    this.body,
+    this.label,
+    this.time,
+    this.url
+
   });
 
   static List<Post> fromJsonArray(String jsonArrayString){
@@ -38,13 +34,11 @@ class Post {
     for(var i=0; i<data.length; i++){
       result.add(new Post(
           id: data[i]["id"],
-          nama: data[i]["nama"],
-          materi: data[i]["materi"],
-          deskripsi: data[i]["deskripsi"],
-          lokasi: data[i]["lokasi"],
-          reward_points: data[i]["reward_points"],
-          reward_xp: data[i]["reward_xp"],
-          pengajar: data[i]["pengajar"]
+          title: data[i]["title"],
+          body: data[i]["body"],
+          label: data[i]["label"],
+          time: data[i]["time"],
+          url: data[i]["url"]
       ));
     }
     return result;
@@ -71,7 +65,7 @@ class PostState{
   Future<void> getFromApi() async{
     try {
       var httpClient = new HttpClient();
-      var request = await httpClient.getUrl(Uri.parse('http://64.56.78.116:8080/gath'));
+      var request = await httpClient.getUrl(Uri.parse('http://64.56.78.116:8080/gallery'));
       var response = await request.close();
       if (response.statusCode == HttpStatus.OK) {
         var json = await response.transform(utf8.decoder).join();

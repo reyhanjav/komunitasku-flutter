@@ -1,6 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
 import 'dart:async';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -102,38 +101,20 @@ class TambahGalleryState extends State<TambahGallery> {
   bool _hasName = false;
   String _eventName;
 
+TextEditingController controllerCode = new TextEditingController();
 TextEditingController controllerName = new TextEditingController();
-TextEditingController controllerDesc = new TextEditingController();
-TextEditingController controllerMateri = new TextEditingController();
-TextEditingController controllerLocation = new TextEditingController();
-TextEditingController controllerXp = new TextEditingController();
-TextEditingController controllerPoints = new TextEditingController();
+TextEditingController controllerPrice = new TextEditingController();
+TextEditingController controllerStock = new TextEditingController();
 
-void addData() async {
-  String url =
-      'http://192.168.1.10:8080/gath';
-  Map map = {
-    'nama': controllerName.text,
-    'deskripsi': controllerDesc.text, //controllerDesc.text,
-    'materi': controllerMateri.text,
-    'lokasi': controllerLocation.text,
-    'reward_points': controllerPoints.text,
-    'reward_xp': controllerXp.text,
-  };
+void addData(){
+  var url="http://64.56.78.116:8080/gallery";
 
-  print(await apiRequest(url, map));
-}
-
-Future<String> apiRequest(String url, Map jsonMap) async {
-  HttpClient httpClient = new HttpClient();
-  HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
-  request.headers.set('content-type', 'application/json');
-  request.add(utf8.encode(json.encode(jsonMap)));
-  HttpClientResponse response = await request.close();
-  // todo - you should check the response.statusCode
-  String reply = await response.transform(utf8.decoder).join();
-  httpClient.close();
-  return reply;
+  http.post(url, body: {
+    "itemcode": controllerCode.text,
+    "itemname": controllerName.text,
+    "price": controllerPrice.text,
+    "stock": controllerStock.text
+  });
 }
 
 
