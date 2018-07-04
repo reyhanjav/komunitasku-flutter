@@ -111,14 +111,14 @@ class _GalleryScreenState extends State<GalleryScreen> with TickerProviderStateM
     
 
     return new Container(
-      decoration: new BoxDecoration(
-        image: new DecorationImage(
-          image: new AssetImage('assets/login.jpg'),
-          fit: BoxFit.cover,
-        ),
-      ),
+      // decoration: new BoxDecoration(
+      //   image: new DecorationImage(
+      //     image: new AssetImage('assets/login.jpg'),
+      //     fit: BoxFit.cover,
+      //   ),
+      // ),
       child: new Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         body: new Container(
           child: new Stack(
           children: <Widget>[
@@ -152,9 +152,9 @@ class _GalleryScreenState extends State<GalleryScreen> with TickerProviderStateM
                         new Padding(
                           padding: const EdgeInsets.only(bottom: 10.0),
                           child: new Text(
-                            "Wajan",
+                            "Agriweb",
                             style: new TextStyle(
-                              color: Colors.white,
+                              color: Colors.black,
                               fontSize: 30.0,
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.w600,
@@ -164,14 +164,14 @@ class _GalleryScreenState extends State<GalleryScreen> with TickerProviderStateM
                         new Text(
                           "Random shitposting will be placed here",
                           style: new TextStyle(
-                            color: Colors.white70,
+                            color: Colors.black,
                             fontFamily: 'Poppins',
                           ),
                         ),
                         new Text(
                           "Just stay tune!",
                           style: new TextStyle(
-                            color: Colors.white70,
+                            color: Colors.black,
                             fontFamily: 'Poppins',
                           ),
                         ),
@@ -212,7 +212,7 @@ class _GalleryScreenState extends State<GalleryScreen> with TickerProviderStateM
                                     ),
                                   );
                                 },
-                                transitionDuration: const Duration(milliseconds: 1000)
+                                transitionDuration: const Duration(milliseconds: 700)
                               ));
                             },
                             child: new Container(
@@ -220,8 +220,8 @@ class _GalleryScreenState extends State<GalleryScreen> with TickerProviderStateM
                                 borderRadius: new BorderRadius.circular(4.0),
                                 boxShadow: [
                                   new BoxShadow(
-                                    color: Colors.black.withAlpha(70),
-                                    offset: const Offset(3.0, 10.0),
+                                    color: Colors.black.withAlpha(50),
+                                    offset: const Offset(0.7, 2.0),
                                     blurRadius: 15.0
                                   )
                                 ]

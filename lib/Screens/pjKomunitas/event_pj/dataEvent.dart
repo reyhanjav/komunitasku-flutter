@@ -6,9 +6,7 @@ class Post {
 
   final int id;
 
-  final int reward_xp;
-
-  final int reward_points;
+  final String time;
 
   final String nama;
 
@@ -22,13 +20,12 @@ class Post {
 
   Post({
     this.id,
+    this.time,
     this.nama,
     this.materi,
     this.deskripsi,
     this.lokasi,
-    this.pengajar,
-    this.reward_points,
-    this.reward_xp
+    this.pengajar
   });
 
   static List<Post> fromJsonArray(String jsonArrayString){
@@ -37,6 +34,7 @@ class Post {
     for(var i=0; i<data.length; i++){
       result.add(new Post(
           id: data[i]["id"],
+          time: data[i]["time"],
           nama: data[i]["nama"],
           materi: data[i]["materi"],
           deskripsi: data[i]["deskripsi"],

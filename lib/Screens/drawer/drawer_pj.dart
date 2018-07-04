@@ -1,7 +1,9 @@
-import 'package:komunitasku/Screens/pjKomunitas/profile_pj/profile.dart';
+import 'package:komunitasku/Screens/Anggota/profile/Profile.dart';
 import 'package:komunitasku/Screens/pjKomunitas/event_pj/event.dart';
+import 'package:komunitasku/Screens/pjKomunitas/event_pj/addEvent.dart';
+import 'package:komunitasku/Screens/pjKomunitas/gallery_pj/addGallery.dart';
 import 'package:komunitasku/Screens/pjKomunitas/absensi/absensi.dart';
-import 'package:komunitasku/Screens/pjKomunitas/gallery_pj/gallery.dart';
+import 'package:komunitasku/Screens/Anggota/todo/todo_demo.dart';
 import 'package:flutter/material.dart';
 
 class DrawerItem {
@@ -10,33 +12,67 @@ class DrawerItem {
   DrawerItem(this.title, this.icon);
 }
 
-class UserDrawer extends StatefulWidget {
+ enum DismissDialogAction {
+  cancel,
+  discard,
+  save,
+}
+
+class PjDrawer extends StatefulWidget {
   final drawerItems = [
     new DrawerItem("Profile", Icons.person),
     new DrawerItem("Event", Icons.calendar_today),
-    new DrawerItem("Forum", Icons.people),
+    new DrawerItem("Absensi", Icons.people),
     new DrawerItem("Gallery", Icons.image),
   ];
 
   @override
   State<StatefulWidget> createState() {
-    return new UserDrawerState();
+    return new PjDrawerState();
   }
 }
 
-class UserDrawerState extends State<UserDrawer> {
-  int _selectedDrawerIndex = 0;
+class PjDrawerState extends State<PjDrawer> {
+  int _selectedDrawerIndex = 1;
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case 0:
-        return new ProfileScreen();
+        return new Profile();
       case 1:
-        return new EventScreen();
+        return new EventPage();
       case 2:
         return new AbsensiScreen();
       case 3:
-        return new GalleryScreen();
+        return GalleryScreen(title: 'TODO');
+
+      default:
+        return new Text("Error");
+    }
+  }
+
+ 
+  
+  _getDrawerFabs(int pos) {
+    switch (pos) {
+      case 0:
+        return new FloatingActionButton(child: new Icon(Icons.create),onPressed: (){},);
+      case 1:
+        return new FloatingActionButton(child: new Icon(Icons.add),onPressed: (){
+           Navigator.push(context, new MaterialPageRoute<DismissDialogAction>(
+                builder: (BuildContext context) => new TambahEvent(),
+                fullscreenDialog: true,
+              ));
+        },);
+      case 2:
+        return new FloatingActionButton(child: new Icon(Icons.archive),onPressed: (){},);
+      case 3:
+        return new FloatingActionButton(child: new Icon(Icons.add),onPressed: (){
+           Navigator.push(context, new MaterialPageRoute<DismissDialogAction>(
+                builder: (BuildContext context) => new TambahGallery(),
+                fullscreenDialog: true,
+              ));
+        },);
 
       default:
         return new Text("Error");
@@ -50,6 +86,7 @@ class UserDrawerState extends State<UserDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    final bool showFab = MediaQuery.of(context).viewInsets.bottom==0.0?true:false;
     List<Widget> drawerOptions = [];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
@@ -64,23 +101,14 @@ class UserDrawerState extends State<UserDrawer> {
     }
 
     return new Scaffold(
-      // appBar: new AppBar(
-      //   // here we display the title corresponding to the fragment
-      //   // you can instead choose to have a static title
-      //   centerTitle: true,
-      //   title: new Text(widget.drawerItems[_selectedDrawerIndex].title),
-      // ),
-
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {},
-      ),
+      
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: showFab?_getDrawerFabs(_selectedDrawerIndex):null,
       bottomNavigationBar: BottomAppBar(
         hasNotch: true,
         child: new Row(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.menu),
@@ -89,19 +117,27 @@ class UserDrawerState extends State<UserDrawer> {
                 context: context,
                 builder: (BuildContext context) => 
                 new Drawer(
-                  child: new Column(
-                  children: <Widget>[
-                  new Column(children: drawerOptions)
-                ],
+                  child: new Center(
+                    child:new Column(
+                    children: <Widget>[
+                    new Column(children: drawerOptions)
+                    ],
+                  ),
               ),
             ),
           );
           },
             ),
-            IconButton(
-              icon: Icon(Icons.filter_list),
-              onPressed: () {},
-            )
+            new Row
+          (
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>
+            [
+              new Text('Komunitasku', style: new TextStyle(color: Colors.black,fontFamily: 'Poppins', fontSize: 20.0, fontWeight: FontWeight.w700)),
+              new Text('.', style: new TextStyle(color: Colors.pink, fontSize: 26.0, fontWeight: FontWeight.w800))
+            ],
+          ),
           ],
         ),
       ),

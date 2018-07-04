@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komunitasku/app_state_container.dart';
 import 'package:komunitasku/models/app_state.dart';
 import 'package:komunitasku/Screens/auth_screen.dart';
-import 'package:komunitasku/Screens/drawer/drawer_user.dart';
+import 'package:komunitasku/Screens/drawer/drawer_pj.dart';
 
 class AppScreen extends StatefulWidget {
   @override
@@ -18,7 +18,7 @@ class AppScreenState extends State<AppScreen> {
     } else if (!appState.isLoading && appState.user == null) {
       return new AuthScreen();
     } else {
-      return new UserDrawer();
+      return new PjDrawer();
     }
   }
 
