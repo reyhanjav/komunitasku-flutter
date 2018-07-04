@@ -3,7 +3,7 @@ import 'package:komunitasku/Screens/pjKomunitas/event_pj/event.dart';
 import 'package:komunitasku/Screens/pjKomunitas/event_pj/addEvent.dart';
 import 'package:komunitasku/Screens/pjKomunitas/gallery_pj/addGallery.dart';
 import 'package:komunitasku/Screens/pjKomunitas/absensi/absensi.dart';
-import 'package:komunitasku/Screens/Anggota/todo/todo_demo.dart';
+//import 'package:komunitasku/Screens/Anggota/todo/todo_demo.dart';
 import 'package:komunitasku/Screens/pjKomunitas/gallery_pj/gallery.dart';
 import 'package:flutter/material.dart';
 
@@ -57,8 +57,13 @@ class PjDrawerState extends State<PjDrawer> {
   _getDrawerFabs(int pos) {
     switch (pos) {
       case 0:
-        return new FloatingActionButton(child: new Icon(Icons.create),onPressed: (){},);
-      case 1:
+        return new FloatingActionButton(child: new Icon(Icons.add),onPressed: (){
+           Navigator.push(context, new MaterialPageRoute<DismissDialogAction>(
+                builder: (BuildContext context) => new TambahGallery(),
+                fullscreenDialog: true,
+              ));
+        },);
+      case 3:
         return new FloatingActionButton(child: new Icon(Icons.add),onPressed: (){
            Navigator.push(context, new MaterialPageRoute<DismissDialogAction>(
                 builder: (BuildContext context) => new TambahEvent(),
@@ -67,10 +72,10 @@ class PjDrawerState extends State<PjDrawer> {
         },);
       case 2:
         return new FloatingActionButton(child: new Icon(Icons.archive),onPressed: (){},);
-      case 3:
+      case 1:
         return new FloatingActionButton(child: new Icon(Icons.add),onPressed: (){
            Navigator.push(context, new MaterialPageRoute<DismissDialogAction>(
-                builder: (BuildContext context) => new TambahGallery(),
+                builder: (BuildContext context) => new TambahEvent(),
                 fullscreenDialog: true,
               ));
         },);

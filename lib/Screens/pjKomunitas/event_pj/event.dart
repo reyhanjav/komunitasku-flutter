@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import './dataEvent.dart';
 import 'package:http/http.dart' as http;
-import 'package:sticky_headers/sticky_headers.dart';
+//import 'package:sticky_headers/sticky_headers.dart';
+import './editEvent.dart';
+
+enum DismissDialogAction {
+  cancel,
+  discard,
+  save,
+}
 
 class EventPage extends StatefulWidget {
   EventPage({Key key}) : super(key: key);
@@ -59,6 +66,7 @@ class _EventPageState extends State<EventPage>{
 
   Widget _getSuccessStateWidget(){
     return new ListView.builder(
+      reverse: true,
         itemCount: postState.posts.length,
         itemBuilder: (context, index) {
           return new Material(
@@ -96,7 +104,10 @@ class _EventPageState extends State<EventPage>{
                   new FlatButton(
                     child: const Text('EDIT'),
                     onPressed: () {
-                      /* ... */
+                      Navigator.push(context, new MaterialPageRoute<DismissDialogAction>(
+                      builder: (BuildContext context) => new EditEvent(),
+                      fullscreenDialog: true,
+                      ));
                     },
                   ),
                 ],
@@ -149,53 +160,53 @@ class _EventPageState extends State<EventPage>{
   }
 }
 
-class myCardLayout extends StatelessWidget {
-  // default constructor
-  myCardLayout({this.id, this.title, this.description, this.location});
+// class myCardLayout extends StatelessWidget {
+//   // default constructor
+//   myCardLayout({this.id, this.title, this.description, this.location});
 
-  // init variables
-  final int id;
-  final String title;
-  final String description;
-  final String location;
+//   // init variables
+//   final int id;
+//   final String title;
+//   final String description;
+//   final String location;
 
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-      child: new Card(
-        child: new Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            new ListTile(
-              title: new Text(
-                title,
-                style: new TextStyle(fontSize: 20.0),
-              ),
-              subtitle:
-                  new Text(description),
-            ),
-            new ButtonTheme.bar(
-              // make buttons use the appropriate styles for cards
-              child: new ButtonBar(
-                children: <Widget>[
-                  new FlatButton(
-                    child: const Text('DELETE'),
-                    onPressed: () {
-                      /* ... */
-                    },
-                  ),
-                  new FlatButton(
-                    child: const Text('EDIT'),
-                    onPressed: () {
-                      /* ... */
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return new Container(
+//       child: new Card(
+//         child: new Column(
+//           mainAxisSize: MainAxisSize.min,
+//           children: <Widget>[
+//             new ListTile(
+//               title: new Text(
+//                 title,
+//                 style: new TextStyle(fontSize: 20.0),
+//               ),
+//               subtitle:
+//                   new Text(description),
+//             ),
+//             new ButtonTheme.bar(
+//               // make buttons use the appropriate styles for cards
+//               child: new ButtonBar(
+//                 children: <Widget>[
+//                   new FlatButton(
+//                     child: const Text('DELETE'),
+//                     onPressed: () {
+//                       /* ... */
+//                     },
+//                   ),
+//                   new FlatButton(
+//                     child: const Text('EDIT'),
+//                     onPressed: () {
+//                       /* ... */
+//                     },
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

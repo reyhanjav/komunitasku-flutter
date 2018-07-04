@@ -163,6 +163,7 @@ class _GalleryPageState extends State<GalleryPage>{
                     height: 440.0,
                     width: _width,
                     child: new ListView.builder(
+                      reverse: true,
                       itemCount: postState.posts.length,
                       itemBuilder: (context, index) {
                         
@@ -407,54 +408,54 @@ class _GalleryPageState extends State<GalleryPage>{
   }
 }
 
-class myCardLayout extends StatelessWidget {
-  // default constructor
-  myCardLayout({this.title, this.description});
+// class myCardLayout extends StatelessWidget {
+//   // default constructor
+//   myCardLayout({this.title, this.description});
 
-  // init variables
-  final String title;
-  final String description;
+//   // init variables
+//   final String title;
+//   final String description;
 
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-      child: new Card(
-        child: new Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            new ListTile(
-              title: new Text(
-                title,
-                style: new TextStyle(fontSize: 20.0),
-              ),
-              subtitle:
-                  new Text(description),
-            ),
-            new ButtonTheme.bar(
-              // make buttons use the appropriate styles for cards
-              child: new ButtonBar(
-                children: <Widget>[
-                  new FlatButton(
-                    child: const Text('DELETE'),
-                    onPressed: () {
-                      /* ... */
-                    },
-                  ),
-                  new FlatButton(
-                    child: const Text('EDIT'),
-                    onPressed: () {
-                      /* ... */
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return new Container(
+//       child: new Card(
+//         child: new Column(
+//           mainAxisSize: MainAxisSize.min,
+//           children: <Widget>[
+//             new ListTile(
+//               title: new Text(
+//                 title,
+//                 style: new TextStyle(fontSize: 20.0),
+//               ),
+//               subtitle:
+//                   new Text(description),
+//             ),
+//             new ButtonTheme.bar(
+//               // make buttons use the appropriate styles for cards
+//               child: new ButtonBar(
+//                 children: <Widget>[
+//                   new FlatButton(
+//                     child: const Text('DELETE'),
+//                     onPressed: () {
+//                       /* ... */
+//                     },
+//                   ),
+//                   new FlatButton(
+//                     child: const Text('EDIT'),
+//                     onPressed: () {
+//                       /* ... */
+//                     },
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class DetailPage extends StatefulWidget {
 

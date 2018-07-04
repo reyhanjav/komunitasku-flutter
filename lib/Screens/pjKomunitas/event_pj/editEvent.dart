@@ -106,6 +106,7 @@ TextEditingController controllerMateri = new TextEditingController();
 TextEditingController controllerLocation = new TextEditingController();
 TextEditingController controllerXp = new TextEditingController();
 TextEditingController controllerPoints = new TextEditingController();
+TextEditingController controllerTime = new TextEditingController();
 
 void addData() async {
   String url =
@@ -296,7 +297,7 @@ Future<String> apiRequest(String url, Map jsonMap) async {
             new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Text('From', style: theme.textTheme.caption),
+                new Text('Time', style: theme.textTheme.caption),
                 new DateTimeItem(
                   dateTime: _fromDateTime,
                   onChanged: (DateTime value) {
@@ -308,21 +309,7 @@ Future<String> apiRequest(String url, Map jsonMap) async {
                 )
               ]
             ),
-            new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new Text('To', style: theme.textTheme.caption),
-                new DateTimeItem(
-                  dateTime: _toDateTime,
-                  onChanged: (DateTime value) {
-                    setState(() {
-                      _toDateTime = value;
-                      _saveNeeded = true;
-                    });
-                  }
-                ),
-              ]
-            ),
+
             
           ]
           .map((Widget child) {

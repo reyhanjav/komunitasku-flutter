@@ -1,13 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:async';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:komunitasku/Screens/drawer/drawer_pj.dart';
 
-enum DismissDialogAction {
-  cancel,
-  discard,
-  save,
-}
+
 
 class DateTimeItem extends StatelessWidget {
   DateTimeItem({ Key key, DateTime dateTime, @required this.onChanged })
@@ -95,26 +94,38 @@ class TambahGallery extends StatefulWidget {
 
 class TambahGalleryState extends State<TambahGallery> {
   DateTime _fromDateTime = new DateTime.now();
-  DateTime _toDateTime = new DateTime.now();
+  //DateTime _toDateTime = new DateTime.now();
+  //bool _allDayValue = false;
   bool _saveNeeded = false;
   bool _hasLocation = false;
   bool _hasName = false;
   String _eventName;
 
-TextEditingController controllerCode = new TextEditingController();
-TextEditingController controllerName = new TextEditingController();
-TextEditingController controllerPrice = new TextEditingController();
-TextEditingController controllerStock = new TextEditingController();
+TextEditingController controllerTitle = new TextEditingController();
+TextEditingController controllerBody = new TextEditingController();
+TextEditingController controllerLabel = new TextEditingController();
 
-void addData(){
-  var url="http://64.56.78.116:8080/gallery";
+void addData() async {
+  String url =
+      'http://64.56.78.116:8080/gallery';
+  Map map = {
+    'title': controllerTitle.text,
+    'body': controllerBody.text,
+    'label': controllerLabel.text,
+  };
 
-  http.post(url, body: {
-    "itemcode": controllerCode.text,
-    "itemname": controllerName.text,
-    "price": controllerPrice.text,
-    "stock": controllerStock.text
-  });
+  print(await apiRequest(url, map));
+}
+
+Future<String> apiRequest(String url, Map jsonMap) async {
+  HttpClient httpClient = new HttpClient();
+  HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
+  request.headers.set('content-type', 'application/json');
+  request.add(utf8.encode(json.encode(jsonMap)));
+  HttpClientResponse response = await request.close();
+  String reply = await response.transform(utf8.decoder).join();
+  httpClient.close();
+  return reply;
 }
 
 
@@ -133,7 +144,7 @@ void addData(){
       builder: (BuildContext context) {
         return new AlertDialog(
           content: new Text(
-            'Discard new documentation?',
+            'Discard new event?',
             style: dialogTextStyle
           ),
           actions: <Widget>[
@@ -161,12 +172,17 @@ void addData(){
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(_hasName ? _eventName : 'Add Documentation'),
+        title: new Text(_hasName ? _eventName : 'Add Gallery'),
         actions: <Widget> [
           new FlatButton(
             child: new Text('SAVE', style: theme.textTheme.body1.copyWith(color: Colors.white)),
             onPressed: () {
-              Navigator.pop(context, DismissDialogAction.save);
+              addData();
+              Navigator.push(context,
+              MaterialPageRoute(
+              builder: (BuildContext context) => PjDrawer()
+            ),
+            );
             }
           )
         ]
@@ -180,8 +196,8 @@ void addData(){
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               alignment: Alignment.bottomLeft,
               child: new TextField(
+                controller: controllerTitle,
                 decoration: const InputDecoration(
-                  border: const OutlineInputBorder(),
                   labelText: 'Title',
                   filled: true
                 ),
@@ -199,24 +215,36 @@ void addData(){
             new Container(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               alignment: Alignment.bottomLeft,
-              child: new TextFormField(
+              child: new TextField(
+                controller: controllerBody,
                 decoration: const InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText: 'Body',
-                  hintText: 'add your body',
+                  labelText: 'Description',
+                  
                   filled: true
                 ),
-
+                onChanged: (String value) {
+                  setState(() {
+                    _hasLocation = value.isNotEmpty;
+                  });
+                }
               )
             ),
-                new TextFormField(
-                  decoration: const InputDecoration(
-                    border: const OutlineInputBorder(),
-                    hintText: 'Tell us about yourself',
-                    labelText: 'Description',
-                  ),
-                  maxLines: 20,
+            new Container(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              alignment: Alignment.bottomLeft,
+              child: new TextField(
+                controller: controllerLabel,
+                decoration: const InputDecoration(
+                  labelText: 'Label',
+                  filled: true
                 ),
+                onChanged: (String value) {
+                  setState(() {
+                    _hasLocation = value.isNotEmpty;
+                  });
+                }
+              )
+            ),
             
           ]
           .map((Widget child) {

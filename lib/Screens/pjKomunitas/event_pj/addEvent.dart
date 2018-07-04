@@ -4,6 +4,7 @@ import 'dart:async';
 // import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:komunitasku/Screens/drawer/drawer_pj.dart';
 
 
 
@@ -107,17 +108,28 @@ TextEditingController controllerLocation = new TextEditingController();
 TextEditingController controllerXp = new TextEditingController();
 TextEditingController controllerPoints = new TextEditingController();
 
+dynamic myEncode(dynamic item) {
+  if(item is DateTime) {
+    return item.toIso8601String();
+  }
+  return item;
+}
+
 void addData() async {
+
+  var dt = new DateTime.now();
+  var str = json.encode(dt, toEncodable: myEncode);
+
   String url =
       'http://64.56.78.116:8080/gath';
   Map map = {
-    'data': {
-    "nama": controllerName.text,
-    "deskripsi": controllerDesc.text,
-    "materi": controllerMateri.text,
-    "lokasi": controllerLocation.text,
-    "reward_points": controllerPoints.text,
-    "reward_xp": controllerXp.text,},
+    'nama': controllerName.text,
+    'deskripsi': controllerDesc.text,
+    'materi': controllerMateri.text,
+    'lokasi': controllerLocation.text,
+    'reward_points': controllerPoints.text,
+    'reward_xp': controllerXp.text,
+
   };
 
   print(await apiRequest(url, map));
@@ -129,7 +141,6 @@ Future<String> apiRequest(String url, Map jsonMap) async {
   request.headers.set('content-type', 'application/json');
   request.add(utf8.encode(json.encode(jsonMap)));
   HttpClientResponse response = await request.close();
-  // todo - you should check the response.statusCode
   String reply = await response.transform(utf8.decoder).join();
   httpClient.close();
   return reply;
@@ -185,7 +196,11 @@ Future<String> apiRequest(String url, Map jsonMap) async {
             child: new Text('SAVE', style: theme.textTheme.body1.copyWith(color: Colors.white)),
             onPressed: () {
               addData();
-              Navigator.pop(context);
+              Navigator.push(context,
+              MaterialPageRoute(
+              builder: (BuildContext context) => PjDrawer()
+            ),
+            );
             }
           )
         ]
@@ -290,38 +305,7 @@ Future<String> apiRequest(String url, Map jsonMap) async {
                 ),
                 keyboardType: TextInputType.number,
               )
-            ),
-            
-            new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new Text('From', style: theme.textTheme.caption),
-                new DateTimeItem(
-                  dateTime: _fromDateTime,
-                  onChanged: (DateTime value) {
-                    setState(() {
-                      _fromDateTime = value;
-                      _saveNeeded = true;
-                    });
-                  }
-                )
-              ]
-            ),
-            new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new Text('To', style: theme.textTheme.caption),
-                new DateTimeItem(
-                  dateTime: _toDateTime,
-                  onChanged: (DateTime value) {
-                    setState(() {
-                      _toDateTime = value;
-                      _saveNeeded = true;
-                    });
-                  }
-                ),
-              ]
-            ),
+            ),           
             
           ]
           .map((Widget child) {
